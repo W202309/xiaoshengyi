@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>小生意</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-weight: 500;
+    }
+    header {
+      background: #3498db;
+      color: #fff;
+      padding: 24px 0 18px 0;
+      text-align: center;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      box-shadow: 0 2px 12px rgba(52,152,219,.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .category-nav {
+      display: flex;
+      gap: 12px;
+      padding: 20px 20px 0 20px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      max-width: 1100px;
+      margin: 0 auto;
+      scrollbar-width: none;
+    }
+    .category-nav::-webkit-scrollbar {
+      display: none;
+    }
+    .category-item {
+      padding: 10px 24px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 25px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all .3s ease;
+      font-size: 0.95rem;
+      color: #666;
+    }
+    .category-item:hover,
+    .category-item.active {
+      background: linear-gradient(135deg, #ff7d29, #ff9d4d);
+      color: #fff;
+      border-color: transparent;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 24px auto 36px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 24px;
+      padding: 0 20px;
+    }
+    .product-card {
+      background: #fff;
+      border: 1px solid #e8e8e8;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all .3s ease;
+      overflow: hidden;
+      position: relative;
+    }
+    .product-card:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
+    }
+    .product-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #fff;
+      z-index: 10;
+    }
+    .product-tag.hot {
+      background: linear-gradient(135deg, #ff4757, #ff6b81);
+    }
+    .product-tag.new {
+      background: linear-gradient(135deg, #2ed573, #7bed9f);
+    }
+    .product-tag.limited {
+      background: linear-gradient(135deg, #ffa502, #ffcc00);
+    }
+    .product-img-wrapper {
+      width: 100%;
+      position: relative;
+    }
+    .product-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background: #edeef1;
+      cursor: pointer;
+    }
+    .product-card a {
+      cursor: pointer;
+      text-decoration: none;
+      width: 100%;
+    }
+    .product-info {
+      padding: 16px;
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .product-title {
+      font-size: 1.05rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+      color: #333;
+      text-align: center;
+    }
+    .product-price {
+      color: #ff7d29;
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+    .contact-btn {
+      padding: 10px 32px;
+      background: linear-gradient(135deg, #ff7d29, #ff9d4d);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: all .3s ease;
+      box-shadow: 0 2px 8px rgba(255,125,41,0.3);
+    }
+    .contact-btn:hover {
+      background: linear-gradient(135deg, #e66a1a, #f08936);
+      box-shadow: 0 4px 12px rgba(255,125,41,0.4);
+      transform: translateY(-3px);
+    }
+    @media (max-width: 600px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span style="color: #ff7d29;">小生意</span>
+    <div style="font-size: 1rem; margin-top: 8px; opacity: 0.9;">微商的小生意，我们的大事业</div>
+  </header>
+  <nav class="category-nav">
+    <div class="category-item active">推荐</div>
+    <div class="category-item">美妆</div>
+    <div class="category-item">美食</div>
+    <div class="category-item">服饰</div>
+    <div class="category-item">数码</div>
+    <div class="category-item">家居</div>
+  </nav>
+  <main>
+    <div class="container">
+      <div class="product-card">
+        <div class="product-tag hot">爆款</div>
+        <a href="detail.html?id=1">
+          <div class="product-img-wrapper">
+            <img src="4.jpg" alt="Vintage" class="product-img">
+          </div>
+          <div class="product-info">
+            <div class="product-title">Vintage</div>
+            <div class="product-price">¥269 🔥</div>
+            <button class="contact-btn" onclick="event.preventDefault(); event.stopPropagation(); copyWechat('shoes01')">复制微信号</button>
+          </div>
+        </a>
+      </div>
+      <div class="product-card">
+        <div class="product-tag new">新品</div>
+        <a href="detail.html?id=2">
+          <div class="product-img-wrapper">
+            <img src="5.jpg" alt="运动板鞋" class="product-img">
+          </div>
+          <div class="product-info">
+            <div class="product-title">运动板鞋</div>
+            <div class="product-price">¥399 ⚡️</div>
+            <button class="contact-btn" onclick="event.preventDefault(); event.stopPropagation(); copyWechat('beauty01')">复制微信号</button>
+          </div>
+        </a>
+      </div>
+      <div class="product-card">
+        <div class="product-tag limited">限时</div>
+        <a href="detail.html?id=3">
+          <div class="product-img-wrapper">
+            <img src="美妆护肤.jpg" alt="美妆护肤" class="product-img">
+          </div>
+          <div class="product-info">
+            <div class="product-title">美妆护肤</div>
+            <div class="product-price">¥529 🔥</div>
+            <button class="contact-btn" onclick="event.preventDefault(); event.stopPropagation(); copyWechat('bag01')">复制微信号</button>
+          </div>
+        </a>
+      </div>
+      <div class="product-card">
+        <div class="product-tag hot">爆款</div>
+        <a href="detail.html?id=4">
+          <div class="product-img-wrapper">
+            <img src="6.jpg" alt="Wireless Earbuds" class="product-img">
+          </div>
+          <div class="product-info">
+            <div class="product-title">Wireless Earbuds</div>
+            <div class="product-price">¥199 ⚡️</div>
+            <button class="contact-btn" onclick="event.preventDefault(); event.stopPropagation(); copyWechat('earbuds01')">复制微信号</button>
+          </div>
+        </a>
+      </div>
+    </div>
+  </main>
+</body>
+<!-- 建议将以下 meta 标签加入 <head>，提升移动端适配能力 -->
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> -->
+<style>
+  .toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 1rem;
+    z-index: 1000;
+    display: none;
+  }
+  .toast.show {
+    display: block;
+    animation: fadeInOut 2s ease;
+  }
+  @keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+</style>
+<div class="toast" id="toast">卖家微信号已复制，去微信添加</div>
+<script>
+  function copyWechat(wechatId) {
+    navigator.clipboard.writeText(wechatId).then(() => {
+      showToast();
+    }).catch(() => {
+      const textArea = document.createElement('textarea');
+      textArea.value = wechatId;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      showToast();
+    });
+  }
+  function showToast() {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2000);
+  }
+</script>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>商品详情 - 小生意</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-weight: 500;
+    }
+    header {
+      background: #3498db;
+      color: #fff;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 12px rgba(52,152,219,.2);
+    }
+    .back-link {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      transition: opacity .3s;
+    }
+    .back-link:hover {
+      opacity: 0.8;
+    }
+    .back-link::before {
+      content: '←';
+      margin-right: 8px;
+      font-size: 1.2rem;
+    }
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+    .product-detail {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .product-img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      background: #edeef1;
+    }
+    .product-info {
+      padding: 24px;
+    }
+    .product-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #282c39;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .product-description {
+      color: #888;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .product-price {
+      color: #ff7d29;
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 24px;
+    }
+    .seller-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+    .seller-nickname {
+      color: #666;
+      font-size: 0.95rem;
+    }
+    .contact-btn {
+      padding: 10px 28px;
+      background: linear-gradient(135deg, #ff7d29, #ff9d4d);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: all .3s ease;
+      box-shadow: 0 2px 8px rgba(255,125,41,0.3);
+    }
+    .contact-btn:hover {
+      background: linear-gradient(135deg, #e66a1a, #f08936);
+      box-shadow: 0 4px 12px rgba(255,125,41,0.4);
+      transform: translateY(-2px);
+    }
+    .not-found {
+      text-align: center;
+      padding: 60px 20px;
+      color: #888;
+      font-size: 1.2rem;
+    }
+    .toast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-size: 1rem;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity .3s;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="weishang.html" class="back-link">返回首页</a>
+  </header>
+  
+  <div class="container">
+    <div class="product-detail" id="productDetail">
+      <!-- 商品内容将通过 JavaScript 动态渲染 -->
+    </div>
+  </div>
+  
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // 内置商品数据
+    const products = [
+      {
+        id: 1,
+        title: 'Vintage',
+        price: 269,
+        description: '复古风格商品',
+        image: '4.jpg',
+        wechat: 'shoes01'
+      },
+      {
+        id: 2,
+        title: '运动板鞋',
+        price: 399,
+        description: '时尚运动板鞋',
+        image: '5.jpg',
+        wechat: 'beauty01'
+      },
+      {
+        id: 3,
+        title: '美妆护肤',
+        price: 529,
+        description: '美妆护肤产品',
+        image: '美妆护肤.jpg',
+        wechat: 'bag01'
+      },
+      {
+        id: 4,
+        title: 'Wireless Earbuds',
+        price: 199,
+        description: '无线蓝牙耳机',
+        image: '6.jpg',
+        wechat: 'earbuds01'
+      }
+    ];
+
+    // 获取 URL 参数
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    // 显示提示消息
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    // 复制到剪贴板
+    async function copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(`已复制微信号：${text}`);
+      } catch (err) {
+        // 降级方案
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast(`已复制微信号：${text}`);
+      }
+    }
+
+    // 渲染商品详情
+    function renderProductDetail() {
+      const productId = getQueryParam('id');
+      const productDetail = document.getElementById('productDetail');
+      
+      if (!productId) {
+        productDetail.innerHTML = '<div class="not-found">商品不存在</div>';
+        return;
+      }
+
+      const product = products.find(p => p.id === parseInt(productId));
+      
+      if (!product) {
+        productDetail.innerHTML = '<div class="not-found">商品不存在</div>';
+        return;
+      }
+
+      // 处理图片占位
+      const imageSrc = product.image || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22%3E%3Crect fill=%22%23edeef1%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%23999%22 font-family=%22sans-serif%22 font-size=%2224%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E商品图片%3C/text%3E%3C/svg%3E';
+
+      productDetail.innerHTML = `
+        <img src="${imageSrc}" alt="${product.title}" class="product-img">
+        <div class="product-info">
+          <h2 class="product-title">${product.title}</h2>
+          <p class="product-description">${product.description}</p>
+          <div class="product-price">¥${product.price}</div>
+          <div class="seller-section">
+            <span class="seller-nickname">卖家微信号：${product.wechat}</span>
+            <button class="contact-btn" onclick="copyToClipboard('${product.wechat}')">复制微信号</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // 页面加载时渲染
+    renderProductDetail();
+  </script>
+</body>
+</html>
